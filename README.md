@@ -1,6 +1,6 @@
 Overview GHG Emissions Mapping Application
 
-![AppIcon](app_icon.png)
+![AppIcon](project_icon.png)
 
 ## Overview This application maps and visualizes human and natural GHG emissions, using satellite data in concert with model-based datasets. This will enable the user to select a gas, such as CO₂ or CH₄, for example, then select a region, which may be a city, select a time period, and observe the GHG emission trend in near real time, availing of high-resolution data from the United States.
 The Greenhouse Gas Center and other satellite sources give quite useful information for policy analysts, scientists, and communities on ways to address climate change.
