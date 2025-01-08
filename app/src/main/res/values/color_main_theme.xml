@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#006D2F</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#96F8A9</color>
+    <color name="onPrimaryContainer">#002109</color>
+    <color name="secondary">#006D2F</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#96F8A9</color>
+    <color name="onSecondaryContainer">#002109</color>
+    <color name="tertiary">#B91D22</color>
+    <color name="onTertiary">#FFFFFF</color>
+    <color name="tertiaryContainer">#FFDAD5</color>
+    <color name="onTertiaryContainer">#410003</color>
+    <color name="background">#FBFDF7</color>
+    <color name="onBackground">#1A1C19</color>
+    <color name="surface">#FBFDF7</color>
+    <color name="onSurface">#1A1C19</color>
+    <color name="surfaceVariant">#DDE5DA</color>
+    <color name="onSurfaceVariant">#414941</color>
+    <color name="outline">#717970</color>
+    <color name="inverseOnSurface">#F0F2EC</color>
+    <color name="inverseSurface">#2F312E</color>
+    <color name="primaryInverse">#7ADB8F</color>
+    <!-- attrs colors -->
+    <color name="NavbackColor">#F1ECF1</color>
+    <color name="LinearBackColor">#FDFBFF</color>
+    <color name="BackMyItem">#EDE2FF</color>
+    <color name="fog">#EDE2FF</color>
+    <!-- dark amoled -->
+    <color name="DarkNavbackColor">#0E1015</color>
+    <color name="DarkLinearBackColor">#000000</color>
+    <color name="switch_color">@color/primary</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="white">#ffffff</color>
+</resources>
