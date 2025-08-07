@@ -162,6 +162,10 @@ class MainFragment : Fragment() {
             exportImageLauncher.launch("map_export.png")
         }
 
+        binding.newFab.setOnClickListener {
+            showFilterBottomSheet()
+        }
+
         // ROI feature removed due to build issues.
 
         binding.setDatasetAFab.setOnClickListener {
@@ -568,24 +572,24 @@ class MainFragment : Fragment() {
     private fun openFabMenu() {
         isFabMenuOpen = true
         ObjectAnimator.ofFloat(binding.fab, "rotation", 0f, 45f).start()
-        showFab(binding.exportImageFab, -200f)
-        showFab(binding.exportDataFab, -350f)
-        showFab(binding.importDataFab, -500f)
-        showFab(binding.loadProjectFab, -650f)
-        showFab(binding.saveProjectFab, -800f)
+        showFab(binding.exportImageFab, -200f, 50)
+        showFab(binding.exportDataFab, -350f, 100)
+        showFab(binding.importDataFab, -500f, 150)
+        showFab(binding.loadProjectFab, -650f, 200)
+        showFab(binding.saveProjectFab, -800f, 250)
     }
 
     private fun closeFabMenu() {
         isFabMenuOpen = false
         ObjectAnimator.ofFloat(binding.fab, "rotation", 45f, 0f).start()
-        hideFab(binding.exportImageFab)
-        hideFab(binding.exportDataFab)
-        hideFab(binding.importDataFab)
-        hideFab(binding.loadProjectFab)
-        hideFab(binding.saveProjectFab)
+        hideFab(binding.exportImageFab, 250)
+        hideFab(binding.exportDataFab, 200)
+        hideFab(binding.importDataFab, 150)
+        hideFab(binding.loadProjectFab, 100)
+        hideFab(binding.saveProjectFab, 50)
     }
 
-    private fun showFab(fab: View, translationY: Float) {
+    private fun showFab(fab: View, translationY: Float, delay: Long) {
         fab.visibility = View.VISIBLE
         fab.alpha = 0f
         fab.translationY = 0f
@@ -593,14 +597,16 @@ class MainFragment : Fragment() {
             .setDuration(300)
             .translationY(translationY)
             .alpha(1f)
+            .setStartDelay(delay)
             .start()
     }
 
-    private fun hideFab(fab: View) {
+    private fun hideFab(fab: View, delay: Long) {
         fab.animate()
             .setDuration(300)
             .translationY(0f)
             .alpha(0f)
+            .setStartDelay(delay)
             .withEndAction { fab.visibility = View.GONE }
             .start()
     }

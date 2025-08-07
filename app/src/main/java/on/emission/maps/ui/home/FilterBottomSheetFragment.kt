@@ -212,7 +212,7 @@ class FilterBottomSheetFragment(
                     ).show()
                 }
             }.onFailure {
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
             }
             progressBar.visibility = View.GONE
             isLoading = false
