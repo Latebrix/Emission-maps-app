@@ -1,37 +1,8 @@
 <resources>
     <string name="app_name">Emission Maps</string>
     <string name="home">Explore</string>
-    <string name="more">Resources</string>
+    <string name="more">More</string>
+    <string name="resources">Resources</string>
     <string name="tools">History</string>
     <string name="search_bar_hint">Type a city, Country name.</string>
-    <string name="resources">Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_aao_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_abp_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_acg_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_act_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_alt_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_ams_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/surface/txt/co2_amt_surface-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_amy_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_aoc_shipboard-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_asc_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_ask_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_avi_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_azr_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bal_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_bao_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/surface/txt/co2_bao_surface-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_bgi_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bhd_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bkt_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bme_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bmw_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_bne_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_brw_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_bsc_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/surface/txt/co2_bwd_surface-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/pfp/aircraft/txt/co2_car_aircraft-pfp_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_cba_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_cgo_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_chr_surface-flask_1_ccgg_event.txt
-Fetching dataset from: https://gml.noaa.gov/aftp/data/trace_gases/co2/flask/surface/txt/co2_cib_surface-flask_1_ccgg_event.txt</string>
 </resources>

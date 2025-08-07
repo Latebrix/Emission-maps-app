@@ -44,6 +44,67 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
 
+    <!-- Parser Spinner -->
+    <TextView
+        android:id="@+id/parser_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Parser"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinner_parser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Colormap Settings -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Colormap Settings"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinner_colormap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_text_min_range"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Min Value"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/edit_text_max_range"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Max Value"
+            android:inputType="numberDecimal" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_log_scale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logarithmic Scale" />
+
     <!-- Apply Filter Button -->
     <Button
         android:id="@+id/apply_filter"
