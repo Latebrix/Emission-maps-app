@@ -1,11 +1,23 @@
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import on.emission.maps.R
-import on.emission.maps.parser.data.DataFetcher
+import on.emission.maps.data.MainViewModel
+import on.emission.maps.data.Repository
 
 class FilterBottomSheetFragment(
     private val cities: List<String>,
@@ -17,14 +29,18 @@ class FilterBottomSheetFragment(
     private lateinit var gasTypeSpinner: Spinner
     private lateinit var progressBar: ProgressBar
     private lateinit var applyButton: Button
-    private var cities_now = cities
-    lateinit var cityFileUrl: String
+    private var citiesNow = cities
+    private lateinit var cityFileUrl: String
     private var selectedGasType: String = "CO2"
     private var isLoading = true
 
+    private val viewModel: MainViewModel by activityViewModels()
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_filter, container, false)
 
         progressBar = view.findViewById(R.id.progress_bar)
@@ -34,76 +50,66 @@ class FilterBottomSheetFragment(
         applyButton = view.findViewById(R.id.apply_filter)
 
         applyButton.visibility = View.GONE
-        citySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, cities_now)
+        citySpinner.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, citiesNow)
 
         val gasTypes = listOf("CO2", "CH4", "Ozone", "Aerosols", "isoprene")
-        gasTypeSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, gasTypes)
+        gasTypeSpinner.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, gasTypes)
 
         gasTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 selectedGasType = gasTypes[position]
                 val baseUrl = getBase()
 
                 progressBar.visibility = View.VISIBLE
                 applyButton.visibility = View.GONE
                 isLoading = true
-                setCancelable(false)
+                isCancelable = false
 
-                DataFetcher().fetchCities(baseUrl) { cityList ->
-                    progressBar.visibility = View.GONE
-                    isLoading = false
-                    setCancelable(true)
-
-                    if (cityList != null) {
-                        cities_now = cityList
-                        citySpinner.adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_dropdown_item,
-                            cities_now
-                        )
-                        Toast.makeText(requireContext(), "Cities updated for $selectedGasType", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(requireContext(), "Failed to load cities for $selectedGasType", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                viewModel.fetchCities(baseUrl)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-
         citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 progressBar.visibility = View.VISIBLE
                 applyButton.visibility = View.GONE
                 isLoading = true
-                setCancelable(false)
+                isCancelable = false
 
-                val selectedCity = cities_now[position]
-                fetchDataFilesForCity(selectedCity) { cityFiles ->
-                    if (cityFiles != null && cityFiles.isNotEmpty()) {
-                        fetchYearsForCity(cityFiles.first()) { years ->
-                            if (years != null && years.isNotEmpty()) {
-                                yearSpinner.adapter = ArrayAdapter(
-                                    requireContext(),
-                                    android.R.layout.simple_spinner_dropdown_item,
-                                    years
-                                )
-                                applyButton.visibility = View.VISIBLE
-                                applyButton.isEnabled = true
-                            } else {
-                                Toast.makeText(requireContext(), "No years found for the selected city", Toast.LENGTH_SHORT).show()
-                                Toast.makeText(requireContext(), cityFiles.first(), Toast.LENGTH_SHORT).show()
-                            }
+                val selectedCity = citiesNow[position]
+                fetchDataFilesForCity(selectedCity) { result ->
+                    result.onSuccess { cityFiles ->
+                        if (cityFiles.isNotEmpty()) {
+                            fetchYearsForCity(cityFiles.first())
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "No files found for the selected city",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             progressBar.visibility = View.GONE
                             isLoading = false
-                            setCancelable(true)
+                            isCancelable = true
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "No files found for the selected city", Toast.LENGTH_SHORT).show()
+                    }.onFailure {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         progressBar.visibility = View.GONE
                         isLoading = false
-                        setCancelable(true)
+                        isCancelable = true
                     }
                 }
             }
@@ -120,22 +126,77 @@ class FilterBottomSheetFragment(
             }
         }
 
+        observeViewModel()
+
         return view
     }
 
-    //val gasTypes = listOf("CO2", "CH4", "Ozone", "Aerosols", "isoprene")
+    private fun observeViewModel() {
+        viewModel.cities.observe(viewLifecycleOwner) { result ->
+            progressBar.visibility = View.GONE
+            isLoading = false
+            isCancelable = true
 
-    private fun fetchDataFilesForCity(cityName: String, callback: (List<String>?) -> Unit) {
-        DataFetcher().fetchDataFilesForCity(getBase(), cityName) { cityFiles ->
-            callback(cityFiles)
+            result.onSuccess { cityList ->
+                citiesNow = cityList
+                citySpinner.adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    citiesNow
+                )
+                Toast.makeText(
+                    requireContext(),
+                    "Cities updated for $selectedGasType",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }.onFailure {
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to load cities for $selectedGasType",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        viewModel.years.observe(viewLifecycleOwner) { result ->
+            result.onSuccess { years ->
+                if (years.isNotEmpty()) {
+                    yearSpinner.adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        years.map { it.toString() }
+                    )
+                    applyButton.visibility = View.VISIBLE
+                    applyButton.isEnabled = true
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "No years found for the selected city",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }.onFailure {
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+            progressBar.visibility = View.GONE
+            isLoading = false
+            isCancelable = true
         }
     }
 
-    private fun fetchYearsForCity(cityDataUrl: String, callback: (List<Int>?) -> Unit) {
-        cityFileUrl = "https://gml.noaa.gov/data/$cityDataUrl"
-        DataFetcher().fetchCityData(cityFileUrl) { years ->
-            callback(years)
+    private fun fetchDataFilesForCity(cityName: String, callback: (Result<List<String>>) -> Unit) {
+        val repository = Repository()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = repository.fetchDataFilesForCity(getBase(), cityName)
+            CoroutineScope(Dispatchers.Main).launch {
+                callback(result)
+            }
         }
+    }
+
+    private fun fetchYearsForCity(cityDataUrl: String) {
+        cityFileUrl = "https://gml.noaa.gov/data/$cityDataUrl"
+        viewModel.fetchYears(cityFileUrl)
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -164,19 +225,13 @@ class FilterBottomSheetFragment(
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    fun getBase(): String{
-        return if (selectedGasType == "CO2") {
-            "https://gml.noaa.gov/dv/data/index.php?parameter_name=Carbon%252BDioxide&frequency=Discrete"
-        } else if (selectedGasType == "CH4") {
-            "https://gml.noaa.gov/dv/data/index.php?category=Greenhouse%252BGases&parameter_name=Methane&frequency=Discrete"
-        } else if (selectedGasType == "Ozone") {
-            "https://gml.noaa.gov/data/data.php?parameter_name=Ozone&frequency=Discrete"
-        } else if (selectedGasType == "Aerosol") {
-            "https://gml.noaa.gov/data/data.php?parameter_name=Aerosols&frequency=Discrete"
-        } else {
-            "https://gml.noaa.gov/data/data.php?parameter_name=isoprene&frequency=Discrete"
+    private fun getBase(): String {
+        return when (selectedGasType) {
+            "CO2" -> on.emission.maps.util.Config.CO2_URL
+            "CH4" -> on.emission.maps.util.Config.CH4_URL
+            "Ozone" -> on.emission.maps.util.Config.OZONE_URL
+            "Aerosol" -> on.emission.maps.util.Config.AEROSOL_URL
+            else -> on.emission.maps.util.Config.ISOPRENE_URL
         }
     }
-
-
 }
