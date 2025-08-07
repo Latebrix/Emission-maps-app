@@ -63,6 +63,18 @@
         app:fabSize="normal"
         app:shapeAppearanceOverlay="@style/FABCustomShape" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="133dp"
+        android:contentDescription="New Button"
+        android:src="@android:drawable/ic_input_add"
+        app:fabSize="normal" />
+
     <!-- Floating Action Button with 8dp rounded corners -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

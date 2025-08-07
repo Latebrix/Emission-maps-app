@@ -16,10 +16,15 @@ class Repository {
     private val yearsCache = mutableMapOf<String, Result<List<Int>>>()
     private val dataCache = mutableMapOf<String, Result<List<MapDataPoint>>>()
     private val parsedUrls = mutableSetOf<String>()
+    private var customParser: CustomParser? = null
+
+    fun setCustomParser(parser: CustomParser) {
+        this.customParser = parser
+    }
 
     suspend fun fetchCityData(urlString: String): Result<List<Int>> {
         if (yearsCache.containsKey(urlString)) {
-            return yearsCache[urlString]!!
+             return yearsCache[urlString]!!
         }
         return withContext(Dispatchers.IO) {
             var newURL = urlString
@@ -37,19 +42,23 @@ class Repository {
             try {
                 val url = URL(newURL)
                 val connection = url.openConnection() as HttpURLConnection
+                connection.connectTimeout = 30000 // 30 seconds
+                connection.readTimeout = 30000 // 30 seconds
                 connection.requestMethod = "GET"
 
                 val responseCode = connection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     parsedUrls.add(newURL)
                     val inputStream = connection.inputStream.bufferedReader()
-                    val content = inputStream.use { it.readLines() }
+                    val allLines = inputStream.use { it.readLines() }
+                    val years = allLines.mapNotNull { line ->
+                        if (!line.startsWith("#")) {
+                            line.split("\\s+".toRegex()).getOrNull(1)?.toIntOrNull()
+                        } else {
+                            null
+                        }
+                    }.distinct().sorted()
 
-                    val years = content.filter { !it.startsWith("#") }
-                        .mapNotNull { line ->
-                            val columns = line.split("\\s+".toRegex())
-                            columns.getOrNull(1)?.toIntOrNull()
-                        }.distinct().sorted()
                     val result = Result.success(years)
                     yearsCache[urlString] = result
                     result
@@ -79,6 +88,8 @@ class Repository {
             try {
                 val url = URL(newURL)
                 val connection = url.openConnection() as HttpURLConnection
+                connection.connectTimeout = 30000 // 30 seconds
+                connection.readTimeout = 30000 // 30 seconds
                 connection.requestMethod = "GET"
 
                 val responseCode = connection.responseCode
@@ -88,23 +99,20 @@ class Repository {
 
                     var latitude: Double? = null
                     var longitude: Double? = null
+                    val timePoints = mutableListOf<TimeSeriesDataPoint>()
+                    val dataLines = allLines.filter { !it.startsWith("#") }
 
-                    val headerLines = allLines.filter { it.startsWith("#") }
-                    for (line in headerLines) {
-                        if (line.contains("Latitude:", ignoreCase = true)) {
-                            latitude = line.split(":").getOrNull(1)?.trim()?.toDoubleOrNull()
-                        }
-                        if (line.contains("Longitude:", ignoreCase = true)) {
-                            longitude = line.split(":").getOrNull(1)?.trim()?.toDoubleOrNull()
+                    if (dataLines.isNotEmpty()) {
+                        val firstLineParts = dataLines[0].split("\\s+".toRegex())
+                        if (firstLineParts.size >= 13) {
+                            latitude = firstLineParts[11].toDoubleOrNull()
+                            longitude = firstLineParts[12].toDoubleOrNull()
                         }
                     }
 
                     if (latitude == null || longitude == null) {
-                        return@withContext Result.failure(Exception("Could not determine location from file header."))
+                        return@withContext Result.failure(Exception("Could not determine location from file."))
                     }
-
-                    val timePoints = mutableListOf<TimeSeriesDataPoint>()
-                    val dataLines = allLines.filter { !it.startsWith("#") }
 
                     for (line in dataLines) {
                         val parts = line.split("\\s+".toRegex())
@@ -181,8 +189,10 @@ class Repository {
                 val standardResult = analyzeDataInternal(urlString, selectedYear, "Standard")
                 if (standardResult.isSuccess && standardResult.getOrThrow().isNotEmpty()) {
                     standardResult
-                } else {
+                } else if (customParser != null) {
                     analyzeDataInternal(urlString, selectedYear, "Alternative")
+                } else {
+                    standardResult // or return a specific error
                 }
             }
             else -> analyzeDataInternal(urlString, selectedYear, parser)
@@ -214,49 +224,31 @@ class Repository {
             try {
                 val url = URL(newURL)
                 val connection = url.openConnection() as HttpURLConnection
+                connection.connectTimeout = 30000 // 30 seconds
+                connection.readTimeout = 30000 // 30 seconds
                 connection.requestMethod = "GET"
 
                 val responseCode = connection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     val inputStream = connection.inputStream.bufferedReader()
-                    val allLines = inputStream.use { it.readLines() }
+                    val allText = inputStream.use { it.readText() }
 
-                    var latitude: Double? = null
-                    var longitude: Double? = null
-
-                    val headerLines = allLines.filter { it.startsWith("#") }
-                    for (line in headerLines) {
-                        if (line.contains("Latitude:", ignoreCase = true)) {
-                            latitude = line.split(":").getOrNull(1)?.trim()?.toDoubleOrNull()
-                        }
-                        if (line.contains("Longitude:", ignoreCase = true)) {
-                            longitude = line.split(":").getOrNull(1)?.trim()?.toDoubleOrNull()
-                        }
+                    if (parser == "Alternative" && customParser != null) {
+                        return@withContext customParser!!.parse(allText)
                     }
 
-                    if (latitude == null || longitude == null) {
-                        val firstDataLine = allLines.firstOrNull { !it.startsWith("#") }
-                        if (firstDataLine != null) {
-                             val parts = firstDataLine.split("\\s+".toRegex())
-                             if (parts.size >= 13) {
-                                latitude = parts[11].toDoubleOrNull()
-                                longitude = parts[12].toDoubleOrNull()
-                             }
-                        }
-                    }
-
-                    if (latitude == null || longitude == null) {
-                        return@withContext Result.failure(Exception("Could not determine location from file header."))
-                    }
-
+                    val allLines = allText.lines()
                     val resultList = mutableListOf<MapDataPoint>()
                     val dataLines = allLines.filter { !it.startsWith("#") }
 
                     for (line in dataLines) {
                         val parts = line.split("\\s+".toRegex())
-                        if (parts.size >= 11 && parts[1] == selectedYear) {
+                        if (parts.size >= 13 && parts[1] == selectedYear) {
+                            val latitude = parts[11].toDoubleOrNull()
+                            val longitude = parts[12].toDoubleOrNull()
                             val value = parts[10].toDoubleOrNull()
-                            if (value != null) {
+
+                            if (latitude != null && longitude != null && value != null) {
                                 resultList.add(MapDataPoint(latitude, longitude, value, newURL))
                             }
                         }
