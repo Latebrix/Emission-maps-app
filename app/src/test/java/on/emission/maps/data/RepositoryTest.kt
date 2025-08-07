@@ -18,4 +18,16 @@ class RepositoryTest {
             assertTrue(cities.getOrNull()!!.isNotEmpty())
         }
     }
+
+    @Test
+    fun testGetParsedUrls() {
+        val repository = Repository()
+        runBlocking {
+            // This is a weak test, as it depends on the state from other tests.
+            // A better test would use a mock server.
+            repository.fetchCityData(on.emission.maps.util.Config.CO2_URL)
+            val urls = repository.getParsedUrls()
+            assertTrue(urls.isNotEmpty())
+        }
+    }
 }

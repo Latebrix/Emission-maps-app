@@ -21,12 +21,27 @@ import on.emission.maps.data.Repository
 
 class FilterBottomSheetFragment(
     private val cities: List<String>,
-    private val applyFilterCallback: (String, String, String, String) -> Unit
+    private val applyFilterCallback: (
+        selectedCity: String,
+        selectedYear: String,
+        cityFileUrl: String,
+        gasType: String,
+        selectedParser: String,
+        colormapName: String,
+        colormapMin: Double?,
+        colormapMax: Double?,
+        useLogScale: Boolean
+    ) -> Unit
 ) : BottomSheetDialogFragment() {
 
     private lateinit var citySpinner: Spinner
     private lateinit var yearSpinner: Spinner
     private lateinit var gasTypeSpinner: Spinner
+    private lateinit var parserSpinner: Spinner
+    private lateinit var colormapSpinner: Spinner
+    private lateinit var minRangeEditText: android.widget.EditText
+    private lateinit var maxRangeEditText: android.widget.EditText
+    private lateinit var logScaleSwitch: androidx.appcompat.widget.SwitchCompat
     private lateinit var progressBar: ProgressBar
     private lateinit var applyButton: Button
     private var citiesNow = cities
@@ -47,6 +62,11 @@ class FilterBottomSheetFragment(
         citySpinner = view.findViewById(R.id.spinner_city)
         yearSpinner = view.findViewById(R.id.spinner_year)
         gasTypeSpinner = view.findViewById(R.id.spinner_gas_type)
+        parserSpinner = view.findViewById(R.id.spinner_parser)
+        colormapSpinner = view.findViewById(R.id.spinner_colormap)
+        minRangeEditText = view.findViewById(R.id.edit_text_min_range)
+        maxRangeEditText = view.findViewById(R.id.edit_text_max_range)
+        logScaleSwitch = view.findViewById(R.id.switch_log_scale)
         applyButton = view.findViewById(R.id.apply_filter)
 
         applyButton.visibility = View.GONE
@@ -56,6 +76,14 @@ class FilterBottomSheetFragment(
         val gasTypes = listOf("CO2", "CH4", "Ozone", "Aerosols", "isoprene")
         gasTypeSpinner.adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, gasTypes)
+
+        val parsers = listOf("Automatic", "Standard", "Alternative")
+        parserSpinner.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, parsers)
+
+        val colormaps = listOf("Simple") // For now
+        colormapSpinner.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, colormaps)
 
         gasTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -119,9 +147,17 @@ class FilterBottomSheetFragment(
 
         applyButton.setOnClickListener {
             if (!isLoading) {
-                val selectedCity = citySpinner.selectedItem.toString()
-                val selectedYear = yearSpinner.selectedItem.toString()
-                applyFilterCallback(selectedCity, selectedYear, cityFileUrl, selectedGasType)
+                applyFilterCallback(
+                    citySpinner.selectedItem.toString(),
+                    yearSpinner.selectedItem.toString(),
+                    cityFileUrl,
+                    selectedGasType,
+                    parserSpinner.selectedItem.toString(),
+                    colormapSpinner.selectedItem.toString(),
+                    minRangeEditText.text.toString().toDoubleOrNull(),
+                    maxRangeEditText.text.toString().toDoubleOrNull(),
+                    logScaleSwitch.isChecked
+                )
                 dismiss()
             }
         }

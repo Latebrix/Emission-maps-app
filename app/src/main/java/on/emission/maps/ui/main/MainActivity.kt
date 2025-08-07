@@ -16,6 +16,7 @@ import on.emission.maps.R
 import on.emission.maps.databinding.ActivityMainBinding
 import on.emission.maps.ui.home.MainFragment
 import on.emission.maps.ui.more.MoreFragment
+import on.emission.maps.ui.resources.ResourcesFragment
 import on.emission.maps.util.system.getThemeColor
 import on.emission.maps.util.theme.StorageThemeManager
 import java.util.Timer
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity() {
             bottomNavigationView = findViewById(R.id.navView),
             rootFragmentsFactory = mapOf(
                 R.id.home to { FragmentInfo(MainFragment(), true) },
+                R.id.resources to { FragmentInfo(ResourcesFragment(), true) },
                 R.id.more to { FragmentInfo(MoreFragment(), true) }
             ),
             defaultTab = R.id.home,
