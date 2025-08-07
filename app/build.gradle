@@ -117,5 +117,9 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-wms:6.1.11'  // Optional, for WMS layers
     implementation 'org.osmdroid:osmdroid-mapsforge:6.1.11'  // Optional, for Mapsforge  // Optional for Web Map Service (WMS) tiles
 
+    // Charting library
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    // OSMDroid Bonus Pack for extra features
+    // implementation 'org.osmdroid:osmdroid-bonuspack:6.9.0' // Causing build failure
 }
