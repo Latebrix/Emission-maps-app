@@ -7,6 +7,11 @@
         android:title="@string/home"/>
 
     <item
+        android:id="@+id/resources"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/resources"/>
+
+    <item
         android:id="@+id/more"
         android:icon="@drawable/ic_more"
         android:title="@string/more"/>

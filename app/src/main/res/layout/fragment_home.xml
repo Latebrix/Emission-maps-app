@@ -24,6 +24,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/time_series_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/play_pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_media_play" />
+
+        <SeekBar
+            android:id="@+id/time_series_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
     <!-- Floating Action Button with 8dp rounded corners -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/tool_fab"
@@ -53,6 +78,99 @@
         app:fabSize="normal"
         app:shapeAppearanceOverlay="@style/FABCustomToolShape"
         app:tint="@android:color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/save_project_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="244dp"
+        android:contentDescription="Save Project"
+        android:src="@android:drawable/ic_menu_save"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/load_project_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="318dp"
+        android:contentDescription="Load Project"
+        android:src="@android:drawable/ic_menu_upload"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/import_data_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="392dp"
+        android:contentDescription="Import Data"
+        android:src="@android:drawable/ic_input_add"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/export_data_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="466dp"
+        android:contentDescription="Export Data"
+        android:src="@android:drawable/ic_menu_share"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/export_image_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="540dp"
+        android:contentDescription="Export Image"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <!-- ROI FAB Removed due to build issues -->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/set_dataset_a_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="688dp"
+        android:contentDescription="Set as Dataset A"
+        android:src="@android:drawable/ic_menu_save"
+        app:fabSize="normal"
+        android:visibility="gone" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/compare_with_a_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="762dp"
+        android:contentDescription="Compare with A"
+        android:src="@android:drawable/ic_menu_compass"
+        app:fabSize="normal"
+        android:visibility="gone" />
 
 
 </on.emission.maps.widget.ElearningCoordinatorLayout>
