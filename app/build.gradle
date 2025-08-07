@@ -78,7 +78,8 @@ dependencies {
     // Fragment 
     //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     //View model ( i think we will not use )
-    //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     //multidex maybe use
     //implementation 'androidx.multidex:multidex:2.0.1'
     // splash screen ( not lastest )
@@ -103,6 +104,8 @@ dependencies {
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0'
     // For control over item selection of both touch and mouse driven selection
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:32.8.1')
     implementation 'com.google.firebase:firebase-analytics'
