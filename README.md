@@ -1,4 +1,6 @@
-Overview GHG Emissions Mapping Application
+> NOTE (Completed 📦): Built this to play around with NASA satellite data and I'm super happy with where V2.0 landed! :) It's fully done now, making room for me to focus 100% on more advanced projects.
+
+## GHG Emissions Mapping Application
 
 ![AppIcon](project_icon.png)
 
@@ -10,6 +12,7 @@ This application maps and visualizes human and natural GHG emissions, using sate
   <img src="App%20Images/Screenshot_20241008-165524.png" width="30%" />
   <img src="App%20Images/Screenshot_20241008-165659.png" width="30%" />
 </p>
+
 ## Version 2.0.0 Update
 **The application now includes additional gases with specific data sources**:
 - Ozone: Ozone Data
