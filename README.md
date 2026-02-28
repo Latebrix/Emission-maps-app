@@ -63,4 +63,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 Special thanks also go out to the **NASA Space Apps Challenge**-who afforded us the opportunity-and to the **U.S. Greenhouse Gas Center** for the data to back the science of our trendlines here. 
 ## Contact Comments and questions are welcome, and should be directed to: mohamed.a.magdy.ahmed@gmail.com.
-- ### Additional Resources - [U.S. Greenhouse Gas Center](https://www.ghgcenter.gov) - [Kotlin Official Documentation](https://kotlinlang.org/docs/reference/)
+- ### Additional Resources - [U.S. Greenhouse Gas Center](https://www.ghgcenter.gov)
