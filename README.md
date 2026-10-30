@@ -32,12 +32,12 @@ This would process the user's input and display the trend of the emissions, in r
 - Data Sources: US Greenhouse Gas Center, NASA satellite datasets, any open source GHG datasets (the data is parsed through web requests).
 - **Mapping Library**: osmmap (OpenStreetMap).
 
+This project is tested with BrowserStack
+
 ## Usage
 - **Analyze Regions**: Allows one to choose any region or city of their interest and provides a GHG emission map of that area.
 - **Select Gas**: Highlight gases emissions, whichever is favored.
 - **Time Slider**: This time slider below shows the trend of the emissions over the years.
-
-This project is tested with BrowserStack
 
 
 ## Acknowledgments
