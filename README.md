@@ -37,6 +37,8 @@ This would process the user's input and display the trend of the emissions, in r
 - **Select Gas**: Highlight gases emissions, whichever is favored.
 - **Time Slider**: This time slider below shows the trend of the emissions over the years.
 
+This project is tested with BrowserStack
+
 
 ## Acknowledgments
 
